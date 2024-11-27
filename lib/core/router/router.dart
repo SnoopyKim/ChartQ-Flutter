@@ -8,6 +8,7 @@ import 'package:chart_q/features/main/presentation/screens/home_screens.dart';
 import 'package:chart_q/features/main/presentation/screens/study_screens.dart';
 import 'package:chart_q/features/main/presentation/screens/quiz_screens.dart';
 import 'package:chart_q/features/main/presentation/screens/profile_screens.dart';
+import 'package:chart_q/features/main/presentation/screens/study_detail_screen.dart';
 import 'package:chart_q/shared/widgets/scaffold_with_nav_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -64,6 +65,13 @@ GoRouter router(Ref ref) {
                 const NoTransitionPage(child: StudyScreen()),
             routes: [
               // 스터디 화면의 하위 라우트들...
+              GoRoute(
+                path: ':id',
+                parentNavigatorKey: _rootNavigatorKey,
+                builder: (context, state) => StudyDetailScreen(
+                  studyId: state.pathParameters['id']!,
+                ),
+              ),
             ],
           ),
           GoRoute(

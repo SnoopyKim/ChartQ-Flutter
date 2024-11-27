@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'user.dart';
+part of 'tag.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,51 +14,50 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-User _$UserFromJson(Map<String, dynamic> json) {
-  return _User.fromJson(json);
+Tag _$TagFromJson(Map<String, dynamic> json) {
+  return _Tag.fromJson(json);
 }
 
 /// @nodoc
-mixin _$User {
+mixin _$Tag {
   String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
-  String get email => throw _privateConstructorUsedError;
+  DateTime get created_at => throw _privateConstructorUsedError;
 
-  /// Serializes this User to a JSON map.
+  /// Serializes this Tag to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
-  /// Create a copy of User
+  /// Create a copy of Tag
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $UserCopyWith<User> get copyWith => throw _privateConstructorUsedError;
+  $TagCopyWith<Tag> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $UserCopyWith<$Res> {
-  factory $UserCopyWith(User value, $Res Function(User) then) =
-      _$UserCopyWithImpl<$Res, User>;
+abstract class $TagCopyWith<$Res> {
+  factory $TagCopyWith(Tag value, $Res Function(Tag) then) =
+      _$TagCopyWithImpl<$Res, Tag>;
   @useResult
-  $Res call({String id, String name, String email});
+  $Res call({String id, String name, DateTime created_at});
 }
 
 /// @nodoc
-class _$UserCopyWithImpl<$Res, $Val extends User>
-    implements $UserCopyWith<$Res> {
-  _$UserCopyWithImpl(this._value, this._then);
+class _$TagCopyWithImpl<$Res, $Val extends Tag> implements $TagCopyWith<$Res> {
+  _$TagCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of User
+  /// Create a copy of Tag
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? id = null,
     Object? name = null,
-    Object? email = null,
+    Object? created_at = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -69,41 +68,39 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      email: null == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
-              as String,
+      created_at: null == created_at
+          ? _value.created_at
+          : created_at // ignore: cast_nullable_to_non_nullable
+              as DateTime,
     ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
-  factory _$$UserImplCopyWith(
-          _$UserImpl value, $Res Function(_$UserImpl) then) =
-      __$$UserImplCopyWithImpl<$Res>;
+abstract class _$$TagImplCopyWith<$Res> implements $TagCopyWith<$Res> {
+  factory _$$TagImplCopyWith(_$TagImpl value, $Res Function(_$TagImpl) then) =
+      __$$TagImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String name, String email});
+  $Res call({String id, String name, DateTime created_at});
 }
 
 /// @nodoc
-class __$$UserImplCopyWithImpl<$Res>
-    extends _$UserCopyWithImpl<$Res, _$UserImpl>
-    implements _$$UserImplCopyWith<$Res> {
-  __$$UserImplCopyWithImpl(_$UserImpl _value, $Res Function(_$UserImpl) _then)
+class __$$TagImplCopyWithImpl<$Res> extends _$TagCopyWithImpl<$Res, _$TagImpl>
+    implements _$$TagImplCopyWith<$Res> {
+  __$$TagImplCopyWithImpl(_$TagImpl _value, $Res Function(_$TagImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of User
+  /// Create a copy of Tag
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? id = null,
     Object? name = null,
-    Object? email = null,
+    Object? created_at = null,
   }) {
-    return _then(_$UserImpl(
+    return _then(_$TagImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -112,83 +109,85 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      email: null == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
-              as String,
+      created_at: null == created_at
+          ? _value.created_at
+          : created_at // ignore: cast_nullable_to_non_nullable
+              as DateTime,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$UserImpl implements _User {
-  const _$UserImpl({required this.id, required this.name, required this.email});
+class _$TagImpl implements _Tag {
+  const _$TagImpl(
+      {required this.id, required this.name, required this.created_at});
 
-  factory _$UserImpl.fromJson(Map<String, dynamic> json) =>
-      _$$UserImplFromJson(json);
+  factory _$TagImpl.fromJson(Map<String, dynamic> json) =>
+      _$$TagImplFromJson(json);
 
   @override
   final String id;
   @override
   final String name;
   @override
-  final String email;
+  final DateTime created_at;
 
   @override
   String toString() {
-    return 'User(id: $id, name: $name, email: $email)';
+    return 'Tag(id: $id, name: $name, created_at: $created_at)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$UserImpl &&
+            other is _$TagImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
-            (identical(other.email, email) || other.email == email));
+            (identical(other.created_at, created_at) ||
+                other.created_at == created_at));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, email);
+  int get hashCode => Object.hash(runtimeType, id, name, created_at);
 
-  /// Create a copy of User
+  /// Create a copy of Tag
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$UserImplCopyWith<_$UserImpl> get copyWith =>
-      __$$UserImplCopyWithImpl<_$UserImpl>(this, _$identity);
+  _$$TagImplCopyWith<_$TagImpl> get copyWith =>
+      __$$TagImplCopyWithImpl<_$TagImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$UserImplToJson(
+    return _$$TagImplToJson(
       this,
     );
   }
 }
 
-abstract class _User implements User {
-  const factory _User(
+abstract class _Tag implements Tag {
+  const factory _Tag(
       {required final String id,
       required final String name,
-      required final String email}) = _$UserImpl;
+      required final DateTime created_at}) = _$TagImpl;
 
-  factory _User.fromJson(Map<String, dynamic> json) = _$UserImpl.fromJson;
+  factory _Tag.fromJson(Map<String, dynamic> json) = _$TagImpl.fromJson;
 
   @override
   String get id;
   @override
   String get name;
   @override
-  String get email;
+  DateTime get created_at;
 
-  /// Create a copy of User
+  /// Create a copy of Tag
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$UserImplCopyWith<_$UserImpl> get copyWith =>
+  _$$TagImplCopyWith<_$TagImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

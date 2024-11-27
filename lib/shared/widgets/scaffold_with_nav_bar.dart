@@ -12,12 +12,7 @@ class ScaffoldWithNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-          child: child,
-        ),
-      ),
+      body: child,
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: _calculateSelectedIndex(context),
