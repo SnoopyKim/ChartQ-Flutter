@@ -20,9 +20,10 @@ Tag _$TagFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Tag {
-  String get id => throw _privateConstructorUsedError;
+  int get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
-  DateTime get created_at => throw _privateConstructorUsedError;
+  @JsonKey(name: 'created_at')
+  DateTime get createdAt => throw _privateConstructorUsedError;
 
   /// Serializes this Tag to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -38,7 +39,8 @@ abstract class $TagCopyWith<$Res> {
   factory $TagCopyWith(Tag value, $Res Function(Tag) then) =
       _$TagCopyWithImpl<$Res, Tag>;
   @useResult
-  $Res call({String id, String name, DateTime created_at});
+  $Res call(
+      {int id, String name, @JsonKey(name: 'created_at') DateTime createdAt});
 }
 
 /// @nodoc
@@ -57,20 +59,20 @@ class _$TagCopyWithImpl<$Res, $Val extends Tag> implements $TagCopyWith<$Res> {
   $Res call({
     Object? id = null,
     Object? name = null,
-    Object? created_at = null,
+    Object? createdAt = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      created_at: null == created_at
-          ? _value.created_at
-          : created_at // ignore: cast_nullable_to_non_nullable
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
     ) as $Val);
   }
@@ -82,7 +84,8 @@ abstract class _$$TagImplCopyWith<$Res> implements $TagCopyWith<$Res> {
       __$$TagImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String name, DateTime created_at});
+  $Res call(
+      {int id, String name, @JsonKey(name: 'created_at') DateTime createdAt});
 }
 
 /// @nodoc
@@ -98,20 +101,20 @@ class __$$TagImplCopyWithImpl<$Res> extends _$TagCopyWithImpl<$Res, _$TagImpl>
   $Res call({
     Object? id = null,
     Object? name = null,
-    Object? created_at = null,
+    Object? createdAt = null,
   }) {
     return _then(_$TagImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      created_at: null == created_at
-          ? _value.created_at
-          : created_at // ignore: cast_nullable_to_non_nullable
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
     ));
   }
@@ -121,21 +124,24 @@ class __$$TagImplCopyWithImpl<$Res> extends _$TagCopyWithImpl<$Res, _$TagImpl>
 @JsonSerializable()
 class _$TagImpl implements _Tag {
   const _$TagImpl(
-      {required this.id, required this.name, required this.created_at});
+      {required this.id,
+      required this.name,
+      @JsonKey(name: 'created_at') required this.createdAt});
 
   factory _$TagImpl.fromJson(Map<String, dynamic> json) =>
       _$$TagImplFromJson(json);
 
   @override
-  final String id;
+  final int id;
   @override
   final String name;
   @override
-  final DateTime created_at;
+  @JsonKey(name: 'created_at')
+  final DateTime createdAt;
 
   @override
   String toString() {
-    return 'Tag(id: $id, name: $name, created_at: $created_at)';
+    return 'Tag(id: $id, name: $name, createdAt: $createdAt)';
   }
 
   @override
@@ -145,13 +151,13 @@ class _$TagImpl implements _Tag {
             other is _$TagImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
-            (identical(other.created_at, created_at) ||
-                other.created_at == created_at));
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, created_at);
+  int get hashCode => Object.hash(runtimeType, id, name, createdAt);
 
   /// Create a copy of Tag
   /// with the given fields replaced by the non-null parameter values.
@@ -171,18 +177,20 @@ class _$TagImpl implements _Tag {
 
 abstract class _Tag implements Tag {
   const factory _Tag(
-      {required final String id,
-      required final String name,
-      required final DateTime created_at}) = _$TagImpl;
+          {required final int id,
+          required final String name,
+          @JsonKey(name: 'created_at') required final DateTime createdAt}) =
+      _$TagImpl;
 
   factory _Tag.fromJson(Map<String, dynamic> json) = _$TagImpl.fromJson;
 
   @override
-  String get id;
+  int get id;
   @override
   String get name;
   @override
-  DateTime get created_at;
+  @JsonKey(name: 'created_at')
+  DateTime get createdAt;
 
   /// Create a copy of Tag
   /// with the given fields replaced by the non-null parameter values.

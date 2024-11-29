@@ -5,7 +5,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:chart_q/core/auth/auth_provider.dart';
 import 'package:chart_q/features/auth/presentation/pages/login_page.dart';
 import 'package:chart_q/features/main/presentation/screens/home_screens.dart';
-import 'package:chart_q/features/main/presentation/screens/study_screens.dart';
+import 'package:chart_q/features/main/presentation/screens/study_screen.dart';
 import 'package:chart_q/features/main/presentation/screens/quiz_screens.dart';
 import 'package:chart_q/features/main/presentation/screens/profile_screens.dart';
 import 'package:chart_q/features/main/presentation/screens/study_detail_screen.dart';
@@ -53,6 +53,7 @@ GoRouter router(Ref ref) {
         routes: [
           GoRoute(
             path: '/home',
+            parentNavigatorKey: _mainNavigatorKey,
             pageBuilder: (context, state) =>
                 const NoTransitionPage(child: HomeScreen()),
             routes: [
@@ -61,6 +62,7 @@ GoRouter router(Ref ref) {
           ),
           GoRoute(
             path: '/study',
+            parentNavigatorKey: _mainNavigatorKey,
             pageBuilder: (context, state) =>
                 const NoTransitionPage(child: StudyScreen()),
             routes: [
@@ -76,6 +78,7 @@ GoRouter router(Ref ref) {
           ),
           GoRoute(
             path: '/quiz',
+            parentNavigatorKey: _mainNavigatorKey,
             pageBuilder: (context, state) =>
                 const NoTransitionPage(child: QuizScreen()),
             routes: [
@@ -84,6 +87,7 @@ GoRouter router(Ref ref) {
           ),
           GoRoute(
             path: '/profile',
+            parentNavigatorKey: _mainNavigatorKey,
             pageBuilder: (context, state) =>
                 const NoTransitionPage(child: ProfileScreen()),
             routes: [
