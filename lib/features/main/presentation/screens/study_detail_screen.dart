@@ -90,7 +90,20 @@ class StudyDetailScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: 16),
                   selectedStudy.when(
-                    data: (study) => HtmlWidget(study?.content ?? ''),
+                    data: (study) => HtmlWidget(
+                      study?.content ?? '',
+                      customStylesBuilder: (element) {
+                        if (element.localName?.toLowerCase() == 'a') {
+                          return {'color': 'rgb(59 130 246)'};
+                        }
+                        return null;
+                      },
+                      onTapUrl: (url) {
+                        print(url);
+                        return true;
+                      },
+                      textStyle: const TextStyle(fontSize: 14),
+                    ),
                     loading: () => const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [CircularProgressIndicator()],

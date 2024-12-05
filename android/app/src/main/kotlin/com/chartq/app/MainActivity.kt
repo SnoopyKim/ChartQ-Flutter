@@ -1,4 +1,4 @@
-package com.example.chart_q
+package com.chartq.app
 
 import io.flutter.embedding.android.FlutterActivity
 

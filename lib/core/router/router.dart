@@ -1,4 +1,5 @@
 import 'package:chart_q/core/utils/logger.dart';
+import 'package:chart_q/features/auth/presentation/pages/welcome_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -11,6 +12,7 @@ import 'package:chart_q/features/main/presentation/screens/profile_screens.dart'
 import 'package:chart_q/features/main/presentation/screens/study_detail_screen.dart';
 import 'package:chart_q/shared/widgets/scaffold_with_nav_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'router.g.dart';
 
@@ -25,25 +27,48 @@ GoRouter router(Ref ref) {
     navigatorKey: _rootNavigatorKey,
     initialLocation: '/home',
     redirect: (context, state) {
-      final isLoggedIn = authState.value != null;
-      final isLoggingIn = state.matchedLocation == '/login';
-
-      if (!isLoggedIn && !isLoggingIn) {
-        logger.d('redirect to login page');
-        return '/login';
+      final authEvent = authState.value?.event;
+      final user = authState.value?.session?.user;
+      switch (authEvent) {
+        case AuthChangeEvent.initialSession:
+          if (user == null) {
+            logger.d('redirect to login page');
+            return '/login';
+          }
+          return null;
+        case AuthChangeEvent.signedIn:
+          if (state.matchedLocation == '/login') {
+            logger.d('redirect to main page');
+            return '/home';
+          }
+          return null;
+        case AuthChangeEvent.signedOut:
+          if (state.matchedLocation != '/login') {
+            logger.d('redirect to login page');
+            return '/login';
+          }
+          return null;
+        case AuthChangeEvent.userUpdated:
+          final isWelcomeDone =
+              user!.userMetadata?['chartq']?['is_welcome_done'] == true;
+          final isWelcoming = state.matchedLocation == '/welcome';
+          if (!isWelcomeDone && !isWelcoming) {
+            logger.d('redirect to welcome page');
+            return '/welcome';
+          }
+          return null;
+        default:
+          return null;
       }
-
-      if (isLoggedIn && isLoggingIn) {
-        logger.d('redirect to main page');
-        return '/home';
-      }
-
-      return null;
     },
     routes: [
       GoRoute(
         path: '/login',
         builder: (context, state) => const LoginPage(),
+      ),
+      GoRoute(
+        path: '/welcome',
+        builder: (context, state) => const WelcomePage(),
       ),
       ShellRoute(
         navigatorKey: _mainNavigatorKey,
@@ -53,7 +78,6 @@ GoRouter router(Ref ref) {
         routes: [
           GoRoute(
             path: '/home',
-            parentNavigatorKey: _mainNavigatorKey,
             pageBuilder: (context, state) =>
                 const NoTransitionPage(child: HomeScreen()),
             routes: [
@@ -62,7 +86,6 @@ GoRouter router(Ref ref) {
           ),
           GoRoute(
             path: '/study',
-            parentNavigatorKey: _mainNavigatorKey,
             pageBuilder: (context, state) =>
                 const NoTransitionPage(child: StudyScreen()),
             routes: [
@@ -78,7 +101,6 @@ GoRouter router(Ref ref) {
           ),
           GoRoute(
             path: '/quiz',
-            parentNavigatorKey: _mainNavigatorKey,
             pageBuilder: (context, state) =>
                 const NoTransitionPage(child: QuizScreen()),
             routes: [
@@ -87,7 +109,6 @@ GoRouter router(Ref ref) {
           ),
           GoRoute(
             path: '/profile',
-            parentNavigatorKey: _mainNavigatorKey,
             pageBuilder: (context, state) =>
                 const NoTransitionPage(child: ProfileScreen()),
             routes: [
