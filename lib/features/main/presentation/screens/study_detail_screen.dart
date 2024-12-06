@@ -1,4 +1,5 @@
 import 'package:chart_q/shared/widgets/app_error_widget.dart';
+import 'package:chart_q/shared/widgets/ui/app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:chart_q/features/main/providers/study_provider.dart';
@@ -18,20 +19,8 @@ class StudyDetailScreen extends ConsumerWidget {
     final study = selectedStudy.value;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(study?.title ?? '',
-            style: const TextStyle(
-                fontSize: 16, fontWeight: FontWeight.bold, height: 26 / 16)),
-        titleSpacing: 0,
-        centerTitle: false,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new),
-          iconSize: 16,
-          onPressed: () => Navigator.pop(context),
-        ),
-        leadingWidth: 40,
-        elevation: 0,
-      ),
+      appBar: AppBars.back(
+          title: study?.title ?? "", onBack: () => Navigator.pop(context)),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
