@@ -46,7 +46,7 @@ class AppText {
 }
 
 class AppColor {
-  static const Color main = Color(0xFF0948A5);
+  static const Color main = Color(0xFF2BB368);
 
   static const Color black = Color(0xFF252525);
   static const Color gray = Color(0xFF9E9B9B);
@@ -55,7 +55,30 @@ class AppColor {
 
   static const Color bgBlack = Color(0xFF252627);
   static const Color bgGray = Color(0xFFF5F5F5);
-  static const Color bgBlue = Color(0xFFF3FAFF);
+  static const Color bgGreen = Color(0xFFF3FFF7);
 
   static const Color lineGray = Color(0xFFDCDCDC);
+}
+
+class AppShadow {
+  static const BoxShadow one = BoxShadow(
+    color: Color(0x0D000000),
+    offset: Offset(0, 2),
+    blurRadius: 10,
+    spreadRadius: 0,
+  );
+
+  static const BoxShadow two = BoxShadow(
+    color: Color(0x40000000),
+    offset: Offset(0, 4),
+    blurRadius: 4,
+    spreadRadius: 0,
+  );
+
+  static const BoxShadow nav = BoxShadow(
+    color: Color(0x338F9BB3),
+    offset: Offset(0, -5),
+    blurRadius: 16,
+    spreadRadius: 0,
+  );
 }

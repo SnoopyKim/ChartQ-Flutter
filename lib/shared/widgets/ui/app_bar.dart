@@ -15,14 +15,18 @@ class AppBars {
       automaticallyImplyLeading: false,
       leading: GestureDetector(
         onTap: onBack,
-        child: const Icon(
-          Icons.arrow_back_ios_new,
-          size: 14,
-          color: AppColor.black,
+        behavior: HitTestBehavior.translucent,
+        child: Padding(
+          padding: const EdgeInsets.only(left: 16.0),
+          child: const Icon(
+            Icons.arrow_back_ios_new,
+            size: 14,
+            color: AppColor.black,
+          ),
         ),
       ),
       actions: actions,
-      leadingWidth: 24,
+      leadingWidth: 40,
       elevation: 0,
     );
   }

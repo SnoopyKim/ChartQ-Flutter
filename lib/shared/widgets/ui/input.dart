@@ -23,7 +23,7 @@ class AppTextInput extends TextFormField {
           decoration: InputDecoration(
             fillColor: enabled == false ? AppColor.bgGray : null,
             filled: enabled == false,
-            border: OutlineInputBorder(
+            enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(5),
               borderSide: BorderSide(
                 color: AppColor.lineGray,
@@ -64,8 +64,6 @@ class AppTextInput extends TextFormField {
               vertical: 8,
             ),
           ),
-          style: AppText.two.copyWith(
-            color: AppColor.black,
-          ),
+          style: AppText.two.copyWith(color: AppColor.black),
         );
 }
