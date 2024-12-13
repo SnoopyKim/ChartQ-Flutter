@@ -19,6 +19,7 @@ class AppTextInput extends TextFormField {
     super.maxLines = 1,
     super.maxLength,
     super.autofocus = false,
+    super.readOnly,
   }) : super(
           decoration: InputDecoration(
             fillColor: enabled == false ? AppColor.bgGray : null,
@@ -64,6 +65,8 @@ class AppTextInput extends TextFormField {
               vertical: 8,
             ),
           ),
-          style: AppText.two.copyWith(color: AppColor.black),
+          style: AppText.two.copyWith(
+            color: enabled == false ? AppColor.gray : AppColor.black,
+          ),
         );
 }

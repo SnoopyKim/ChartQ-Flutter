@@ -1,5 +1,6 @@
 import 'package:chart_q/core/utils/logger.dart';
 import 'package:chart_q/features/auth/presentation/pages/welcome_page.dart';
+import 'package:chart_q/features/main/presentation/screens/profile_edit_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -16,8 +17,10 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'router.g.dart';
 
-final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
-final GlobalKey<NavigatorState> _mainNavigatorKey = GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> _rootNavigatorKey =
+    GlobalKey<NavigatorState>(debugLabel: 'root');
+final GlobalKey<NavigatorState> _mainNavigatorKey =
+    GlobalKey<NavigatorState>(debugLabel: 'main');
 
 @riverpod
 GoRouter router(Ref ref) {
@@ -72,8 +75,8 @@ GoRouter router(Ref ref) {
       ),
       ShellRoute(
         navigatorKey: _mainNavigatorKey,
-        builder: (context, state, child) {
-          return ScaffoldWithNavBar(child: child);
+        pageBuilder: (context, state, child) {
+          return NoTransitionPage(child: ScaffoldWithNavBar(child: child));
         },
         routes: [
           GoRoute(
@@ -113,6 +116,11 @@ GoRouter router(Ref ref) {
                 const NoTransitionPage(child: ProfileScreen()),
             routes: [
               // 프로필 화면의 하위 라우트들...
+              GoRoute(
+                path: 'edit',
+                parentNavigatorKey: _rootNavigatorKey,
+                builder: (context, state) => ProfileEditScreen(),
+              ),
             ],
           ),
         ],
