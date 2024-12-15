@@ -47,24 +47,19 @@ class Auth extends _$Auth {
     String? name,
     String? nickname,
     String? phone,
-    Object? additional,
+    String? userType,
+    bool? isWelcomed,
   }) async {
     final attributes = UserAttributes();
-    if (phone != null) attributes.phone = phone;
-
-    final Map<String, dynamic> userData = {
+    attributes.data = {
       if (name != null) 'name': name,
       if (country != null) 'country': country,
+      if (phone != null) 'phone': phone,
+      if (nickname != null) 'chartq_nickname': nickname,
+      if (userType != null) 'chartq_user_type': userType,
+      if (isWelcomed != null) 'chartq_is_welcomed': isWelcomed,
     };
 
-    if (nickname != null || additional != null) {
-      userData['chartq'] = {
-        if (nickname != null) 'nickname': nickname,
-        if (additional != null) ...(additional as Map<String, dynamic>),
-      };
-    }
-
-    attributes.data = userData;
     return await supabase.auth.updateUser(attributes);
   }
 

@@ -1,6 +1,7 @@
 import 'package:chart_q/constants/style.dart';
 import 'package:chart_q/core/auth/auth_provider.dart';
 import 'package:chart_q/core/utils/logger.dart';
+import 'package:chart_q/core/utils/phone.dart';
 import 'package:chart_q/shared/widgets/ui/button.dart';
 import 'package:chart_q/shared/widgets/ui/input.dart';
 import 'package:country_picker/country_picker.dart';
@@ -37,14 +38,14 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
     _country = Country.tryParse(user?.userMetadata?['country'] ?? 'KR');
 
     _nicknameController = TextEditingController(
-      text: user?.userMetadata?['chartq']['nickname'] ?? '',
+      text: user?.userMetadata?['chartq_nickname'] ?? '',
     );
     _countryController = TextEditingController();
     _nameController = TextEditingController(
       text: user?.userMetadata?['name'] ?? '',
     );
     _phoneController = TextEditingController(
-      text: user?.phone ?? '',
+      text: user?.userMetadata?['phone'] ?? '',
     );
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -235,10 +236,10 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
                               nickname: _nicknameController.text,
                               country: _country!.countryCode,
                               name: _nameController.text,
-                              // phone: _phoneController.text,
-                              additional: {
-                                'is_welcome_done': true,
-                              });
+                              phone: PhoneUtils.formatPhoneNumber(
+                                _phoneController.text,
+                                countryCode: _country!.phoneCode,
+                              ));
                         }
                       },
                     ),

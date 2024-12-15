@@ -38,6 +38,13 @@ GoRouter router(Ref ref) {
             logger.d('redirect to login page');
             return '/login';
           }
+          final isWelcomeDone =
+              user!.userMetadata?['chartq_is_welcomed'] == true;
+          final isWelcoming = state.matchedLocation == '/welcome';
+          if (!isWelcomeDone && !isWelcoming) {
+            logger.d('redirect to welcome page');
+            return '/welcome';
+          }
           return null;
         case AuthChangeEvent.signedIn:
           if (state.matchedLocation == '/login') {
@@ -53,7 +60,7 @@ GoRouter router(Ref ref) {
           return null;
         case AuthChangeEvent.userUpdated:
           final isWelcomeDone =
-              user!.userMetadata?['chartq']?['is_welcome_done'] == true;
+              user!.userMetadata?['chartq_is_welcomed'] == true;
           final isWelcoming = state.matchedLocation == '/welcome';
           if (!isWelcomeDone && !isWelcoming) {
             logger.d('redirect to welcome page');

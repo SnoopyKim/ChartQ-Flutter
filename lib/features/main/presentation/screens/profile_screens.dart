@@ -84,8 +84,7 @@ class ProfileScreen extends ConsumerWidget {
                           style: AppText.three.copyWith(color: AppColor.black),
                         ),
                         Text(
-                          user?.userMetadata?['chartq']?['nickname'] ??
-                              'NICKNAME',
+                          user?.userMetadata?['chartq_nickname'] ?? 'NICKNAME',
                           style: AppText.three.copyWith(color: AppColor.black),
                         ),
                       ],
