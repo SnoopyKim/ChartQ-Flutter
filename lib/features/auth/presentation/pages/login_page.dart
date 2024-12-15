@@ -1,6 +1,10 @@
+import 'package:chart_q/constants/style.dart';
+import 'package:chart_q/core/utils/asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:chart_q/core/auth/auth_provider.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:lottie/lottie.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
@@ -42,59 +46,127 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     try {
       await ref.read(authProvider.notifier).signInWithGoogle();
     } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.toString())),
-        );
-      }
+      _showError(e.toString());
+    }
+  }
+
+  Future<void> _signInWithApple() async {
+    try {
+      await ref.read(authProvider.notifier).signInWithApple();
+    } catch (e) {
+      _showError(e.toString());
+    }
+  }
+
+  Future<void> _signInWithFacebook() async {
+    try {
+      await ref.read(authProvider.notifier).signInWithFacebook();
+    } catch (e) {
+      _showError(e.toString());
+    }
+  }
+
+  void _showError(String message) {
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(message)),
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('로그인')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              TextFormField(
-                controller: _emailController,
-                decoration: const InputDecoration(labelText: '이메일'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return '이메일을 입력해주세요';
-                  }
-                  return null;
-                },
+              Lottie.asset(
+                'assets/lottie/login.json',
+              ),
+              const SizedBox(height: 32),
+              SvgPicture.asset(AppAsset.logoName),
+              const SizedBox(height: 8),
+              Text.rich(
+                TextSpan(text: '20분에 평균 50문제 습득!\n', children: [
+                  TextSpan(text: '차트', style: TextStyle(color: AppColor.main)),
+                  TextSpan(text: '를 가장 많이 연습할 수 있는 '),
+                  TextSpan(
+                      text: '스터디 앱', style: TextStyle(color: AppColor.main))
+                ]),
+                style: AppText.three,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 48),
+              SnsButton(
+                onTap: _signInWithGoogle,
+                icon: AppAsset.google,
+                text: 'Google로 시작하기',
+                color: AppColor.white,
+                textColor: AppColor.gray,
+                borderColor: AppColor.lineGray,
               ),
               const SizedBox(height: 16),
-              TextFormField(
-                controller: _passwordController,
-                decoration: const InputDecoration(labelText: '비밀번호'),
-                obscureText: true,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return '비밀번호를 입력해주세요';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: _signIn,
-                child: const Text('로그인'),
+              SnsButton(
+                onTap: _signInWithApple,
+                icon: AppAsset.apple,
+                text: 'Apple로 시작하기',
+                color: AppColor.bgBlack,
+                textColor: AppColor.white,
               ),
               const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: _signInWithGoogle,
-                child: const Text('Google로 로그인'),
+              SnsButton(
+                onTap: _signInWithFacebook,
+                icon: AppAsset.facebook,
+                text: 'Facebook로 시작하기',
+                color: Color(0xff1877F2),
+                textColor: AppColor.white,
               ),
+              const SizedBox(height: 16),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class SnsButton extends StatelessWidget {
+  const SnsButton({
+    super.key,
+    required this.onTap,
+    required this.icon,
+    required this.text,
+    required this.color,
+    required this.textColor,
+    this.borderColor,
+  });
+  final VoidCallback onTap;
+  final String icon;
+  final String text;
+  final Color color;
+  final Color textColor;
+  final Color? borderColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 40,
+        decoration: BoxDecoration(
+          color: color,
+          border: borderColor != null ? Border.all(color: borderColor!) : null,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SvgPicture.asset(icon, width: 24, height: 24),
+            const SizedBox(width: 10),
+            Text(text, style: AppText.three.copyWith(color: textColor)),
+          ],
         ),
       ),
     );

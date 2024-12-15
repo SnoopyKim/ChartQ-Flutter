@@ -3,7 +3,6 @@ import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:chart_q/core/router/router.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -38,7 +37,7 @@ class MyApp extends ConsumerWidget {
           surface: AppColor.white,
         ),
         useMaterial3: true,
-        textTheme: GoogleFonts.poppinsTextTheme(),
+        fontFamily: 'Poppins',
       ),
       supportedLocales: [
         Locale('en'),

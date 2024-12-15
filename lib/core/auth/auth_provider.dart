@@ -42,6 +42,14 @@ class Auth extends _$Auth {
     }
   }
 
+  Future<void> signInWithApple() async {
+    // final account = await _facebookSignInService.signInWithFacebook();
+  }
+
+  Future<void> signInWithFacebook() async {
+    // final account = await _facebookSignInService.signInWithFacebook();
+  }
+
   Future<UserResponse> updateUser({
     String? country,
     String? name,
