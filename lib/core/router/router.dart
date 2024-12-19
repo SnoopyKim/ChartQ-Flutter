@@ -26,6 +26,12 @@ final GlobalKey<NavigatorState> _mainNavigatorKey =
 GoRouter router(Ref ref) {
   final authState = ref.watch(authProvider);
 
+  bool checkIsWelcoming(User user, GoRouterState state) {
+    final isWelcomeDone = user.userMetadata?['chartq_is_welcomed'] == true;
+    final isWelcoming = state.matchedLocation == '/welcome';
+    return !isWelcomeDone && !isWelcoming;
+  }
+
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
     initialLocation: '/home',
@@ -38,18 +44,20 @@ GoRouter router(Ref ref) {
             logger.d('redirect to login page');
             return '/login';
           }
-          final isWelcomeDone =
-              user!.userMetadata?['chartq_is_welcomed'] == true;
-          final isWelcoming = state.matchedLocation == '/welcome';
-          if (!isWelcomeDone && !isWelcoming) {
+          if (checkIsWelcoming(user, state)) {
             logger.d('redirect to welcome page');
             return '/welcome';
           }
           return null;
         case AuthChangeEvent.signedIn:
           if (state.matchedLocation == '/login') {
-            logger.d('redirect to main page');
-            return '/home';
+            if (checkIsWelcoming(user!, state)) {
+              logger.d('redirect to welcome page');
+              return '/welcome';
+            } else {
+              logger.d('redirect to main page');
+              return '/home';
+            }
           }
           return null;
         case AuthChangeEvent.signedOut:
@@ -59,12 +67,12 @@ GoRouter router(Ref ref) {
           }
           return null;
         case AuthChangeEvent.userUpdated:
-          final isWelcomeDone =
-              user!.userMetadata?['chartq_is_welcomed'] == true;
-          final isWelcoming = state.matchedLocation == '/welcome';
-          if (!isWelcomeDone && !isWelcoming) {
-            logger.d('redirect to welcome page');
-            return '/welcome';
+          if (state.matchedLocation == '/welcome') {
+            logger.d('redirect to home page');
+            return '/home';
+          } else if (state.matchedLocation == '/profile/edit') {
+            logger.d('redirect to profile page');
+            return '/profile';
           }
           return null;
         default:
@@ -103,8 +111,26 @@ GoRouter router(Ref ref) {
               GoRoute(
                 path: ':id',
                 parentNavigatorKey: _rootNavigatorKey,
-                builder: (context, state) => StudyDetailScreen(
-                  studyId: state.pathParameters['id']!,
+                pageBuilder: (context, state) => CustomTransitionPage(
+                  child: StudyDetailScreen(
+                    studyId: state.pathParameters['id']!,
+                  ),
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                    return SlideTransition(
+                      position: Tween<Offset>(
+                        begin: const Offset(1, 0),
+                        end: Offset.zero,
+                      ).animate(
+                        CurvedAnimation(
+                          parent: animation,
+                          curve: Curves.linearToEaseOut,
+                        ),
+                      ),
+                      child: child,
+                    );
+                  },
+                  transitionDuration: const Duration(milliseconds: 200),
                 ),
               ),
             ],
@@ -126,7 +152,25 @@ GoRouter router(Ref ref) {
               GoRoute(
                 path: 'edit',
                 parentNavigatorKey: _rootNavigatorKey,
-                builder: (context, state) => ProfileEditScreen(),
+                pageBuilder: (context, state) => CustomTransitionPage(
+                  child: ProfileEditScreen(),
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                    return SlideTransition(
+                      position: Tween<Offset>(
+                        begin: const Offset(1, 0),
+                        end: Offset.zero,
+                      ).animate(
+                        CurvedAnimation(
+                          parent: animation,
+                          curve: Curves.linearToEaseOut,
+                        ),
+                      ),
+                      child: child,
+                    );
+                  },
+                  transitionDuration: const Duration(milliseconds: 200),
+                ),
               ),
             ],
           ),

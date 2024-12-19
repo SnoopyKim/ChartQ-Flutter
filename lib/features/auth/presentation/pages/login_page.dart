@@ -84,6 +84,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
             children: [
               Lottie.asset(
                 'assets/lottie/login.json',
+                width: MediaQuery.of(context).size.width - 32,
+                height: MediaQuery.of(context).size.width - 32,
+                fit: BoxFit.contain,
               ),
               const SizedBox(height: 32),
               SvgPicture.asset(AppAsset.logoName),

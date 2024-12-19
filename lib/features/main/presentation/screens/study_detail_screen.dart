@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chart_q/shared/widgets/app_error_widget.dart';
 import 'package:chart_q/shared/widgets/ui/app_bar.dart';
 import 'package:flutter/material.dart';
@@ -28,8 +29,8 @@ class StudyDetailScreen extends ConsumerWidget {
             Hero(
               tag: 'image-${study?.id}',
               child: study?.image != null
-                  ? Image.network(
-                      study?.image ?? '',
+                  ? CachedNetworkImage(
+                      imageUrl: study?.image ?? '',
                       height: 260,
                       width: double.infinity,
                       fit: BoxFit.cover,

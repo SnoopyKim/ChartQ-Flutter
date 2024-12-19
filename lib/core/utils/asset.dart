@@ -20,4 +20,6 @@ class AppAsset {
   static const String google = '${iconPath}sns/google.svg';
   static const String apple = '${iconPath}sns/apple.svg';
   static const String facebook = '${iconPath}sns/facebook.svg';
+
+  static const String search = '${iconPath}search.svg';
 }

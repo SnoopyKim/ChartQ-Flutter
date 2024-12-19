@@ -62,9 +62,10 @@ class _WelcomePageState extends ConsumerState<WelcomePage> {
   }
 
   void _passToNext() async {
+    // 기본 닉네임은 이름으로 설정
     ref
         .read(authProvider.notifier)
-        .updateUser(nickname: _nicknameController.text, isWelcomed: true);
+        .updateUser(nickname: _nameController.text, isWelcomed: true);
   }
 
   void _handleSubmit() async {
@@ -88,7 +89,7 @@ class _WelcomePageState extends ConsumerState<WelcomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('환영합니다'),
+        title: const Text('환영합니다', style: AppText.h3),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -208,7 +209,6 @@ class _WelcomePageState extends ConsumerState<WelcomePage> {
                         onPressed: _handleSubmit,
                         title: '완료',
                       ),
-                      const SizedBox(height: 16),
                     ],
                   ),
                 ),

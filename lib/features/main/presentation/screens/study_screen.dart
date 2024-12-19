@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -89,8 +90,8 @@ class StudyScreen extends ConsumerWidget {
                                 child: Hero(
                                   tag: 'image-${study.id}',
                                   child: study.image != null
-                                      ? Image.network(
-                                          study.image!,
+                                      ? CachedNetworkImage(
+                                          imageUrl: study.image!,
                                           height: 100,
                                           width: 100,
                                           fit: BoxFit.cover,
