@@ -1,3 +1,6 @@
+import 'package:chart_q/core/utils/logger.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:chart_q/core/supabase/supabase_client.dart';
@@ -48,6 +51,22 @@ class Auth extends _$Auth {
 
   Future<void> signInWithFacebook() async {
     // final account = await _facebookSignInService.signInWithFacebook();
+    // final result = await FacebookAuth.instance.login();
+    // if (result.status == LoginStatus.success) {
+    //   final accessToken = result.accessToken!.token;
+    //   await supabase.auth.signInWithIdToken(
+    //     provider: OAuthProvider.facebook,
+    //     idToken: accessToken,
+    //   );
+    // } else {
+    //   logger.d('${result.status.name}: ${result.message}');
+    // }
+    await supabase.auth.signInWithOAuth(
+      OAuthProvider.facebook,
+      redirectTo: kIsWeb ? null : 'com.chartq.app://login-callback',
+      authScreenLaunchMode:
+          kIsWeb ? LaunchMode.platformDefault : LaunchMode.externalApplication,
+    );
   }
 
   Future<UserResponse> updateUser({

@@ -57,9 +57,16 @@
 			<array>
 				<!-- Copied from GoogleService-Info.plist key REVERSED_CLIENT_ID -->
 				<string>com.googleusercontent.apps.3451066449-04696o6vsuaomk5h1aemklanml4bt9hq</string>
+				<string>fb1753615862066108</string>
 			</array>
 		</dict>
-</array>
+	</array>
+	<key>FacebookAppID</key>
+	<string>1753615862066108</string>
+	<key>FacebookClientToken</key>
+	<string>6ccca08a690f4d4a084d2cec136f4a19</string>
+	<key>FacebookDisplayName</key>
+	<string>ChartQ</string>
 <!-- End of the Google Sign-in Section -->
 </dict>
 </plist>

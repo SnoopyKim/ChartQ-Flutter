@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ChartQ</string>
+    <string name="facebook_app_id">1753615862066108</string>
+    <string name="fb_login_protocol_scheme">fb1753615862066108</string>
+    <string name="facebook_client_token">6ccca08a690f4d4a084d2cec136f4a19</string>
+</resources>

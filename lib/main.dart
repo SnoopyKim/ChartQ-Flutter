@@ -1,4 +1,5 @@
 import 'package:chart_q/constants/style.dart';
+import 'package:chart_q/shared/providers/scaffold_messenger_provider.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -26,11 +27,12 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
-
+    final scaffoldMessengerKey = ref.watch(scaffoldMessengerKeyProvider);
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'ChartQ',
       routerConfig: router,
+      scaffoldMessengerKey: scaffoldMessengerKey,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: AppColor.main,

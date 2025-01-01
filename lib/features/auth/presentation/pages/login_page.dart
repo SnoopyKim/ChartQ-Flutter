@@ -1,4 +1,6 @@
 import 'package:chart_q/constants/style.dart';
+import 'package:chart_q/core/router/router.dart';
+import 'package:chart_q/core/router/routes.dart';
 import 'package:chart_q/core/utils/asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,37 +16,38 @@ class LoginPage extends ConsumerStatefulWidget {
 }
 
 class _LoginPageState extends ConsumerState<LoginPage> {
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
+  // final _emailController = TextEditingController();
+  // final _passwordController = TextEditingController();
+  // final _formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
+    // _emailController.dispose();
+    // _passwordController.dispose();
     super.dispose();
   }
 
-  Future<void> _signIn() async {
-    if (_formKey.currentState!.validate()) {
-      try {
-        await ref.read(authProvider.notifier).signIn(
-              email: _emailController.text,
-              password: _passwordController.text,
-            );
-      } catch (e) {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(e.toString())),
-          );
-        }
-      }
-    }
-  }
+  // Future<void> _signIn() async {
+  //   if (_formKey.currentState!.validate()) {
+  //     try {
+  //       await ref.read(authProvider.notifier).signIn(
+  //             email: _emailController.text,
+  //             password: _passwordController.text,
+  //           );
+  //     } catch (e) {
+  //       if (mounted) {
+  //         ScaffoldMessenger.of(context).showSnackBar(
+  //           SnackBar(content: Text(e.toString())),
+  //         );
+  //       }
+  //     }
+  //   }
+  // }
 
   Future<void> _signInWithGoogle() async {
     try {
       await ref.read(authProvider.notifier).signInWithGoogle();
+      ref.read(routerProvider).go(AppRoutes.home);
     } catch (e) {
       _showError(e.toString());
     }
@@ -53,6 +56,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   Future<void> _signInWithApple() async {
     try {
       await ref.read(authProvider.notifier).signInWithApple();
+      ref.read(routerProvider).go(AppRoutes.home);
     } catch (e) {
       _showError(e.toString());
     }
@@ -61,6 +65,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   Future<void> _signInWithFacebook() async {
     try {
       await ref.read(authProvider.notifier).signInWithFacebook();
+      ref.read(routerProvider).go(AppRoutes.home);
     } catch (e) {
       _showError(e.toString());
     }
@@ -69,7 +74,16 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   void _showError(String message) {
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(message)),
+        SnackBar(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          backgroundColor: AppColor.red,
+          duration: Duration(seconds: 3),
+          behavior: SnackBarBehavior.floating,
+          content: Text(message),
+          dismissDirection: DismissDirection.vertical,
+        ),
       );
     }
   }

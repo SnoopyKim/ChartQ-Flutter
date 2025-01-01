@@ -13,7 +13,8 @@ import 'package:chart_q/features/main/presentation/screens/profile_screens.dart'
 import 'package:chart_q/features/main/presentation/screens/study_detail_screen.dart';
 import 'package:chart_q/shared/widgets/scaffold_with_nav_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+
+import 'routes.dart';
 
 part 'router.g.dart';
 
@@ -24,68 +25,37 @@ final GlobalKey<NavigatorState> _mainNavigatorKey =
 
 @riverpod
 GoRouter router(Ref ref) {
-  final authState = ref.watch(authProvider);
-
-  bool checkIsWelcoming(User user, GoRouterState state) {
-    final isWelcomeDone = user.userMetadata?['chartq_is_welcomed'] == true;
-    final isWelcoming = state.matchedLocation == '/welcome';
-    return !isWelcomeDone && !isWelcoming;
-  }
-
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
-    initialLocation: '/home',
+    initialLocation: AppRoutes.home,
     redirect: (context, state) {
-      final authEvent = authState.value?.event;
-      final user = authState.value?.session?.user;
-      switch (authEvent) {
-        case AuthChangeEvent.initialSession:
-          if (user == null) {
-            logger.d('redirect to login page');
-            return '/login';
-          }
-          if (checkIsWelcoming(user, state)) {
-            logger.d('redirect to welcome page');
-            return '/welcome';
-          }
-          return null;
-        case AuthChangeEvent.signedIn:
-          if (state.matchedLocation == '/login') {
-            if (checkIsWelcoming(user!, state)) {
-              logger.d('redirect to welcome page');
-              return '/welcome';
-            } else {
-              logger.d('redirect to main page');
-              return '/home';
-            }
-          }
-          return null;
-        case AuthChangeEvent.signedOut:
-          if (state.matchedLocation != '/login') {
-            logger.d('redirect to login page');
-            return '/login';
-          }
-          return null;
-        case AuthChangeEvent.userUpdated:
-          if (state.matchedLocation == '/welcome') {
-            logger.d('redirect to home page');
-            return '/home';
-          } else if (state.matchedLocation == '/profile/edit') {
-            logger.d('redirect to profile page');
-            return '/profile';
-          }
-          return null;
-        default:
-          return null;
+      final user = ref.read(authProvider.notifier).user;
+
+      final isGoingToLogin = state.matchedLocation == AppRoutes.login;
+      final isGoingToWelcome = state.matchedLocation == AppRoutes.welcome;
+      final isWelcomeDone = user?.userMetadata?['chartq_is_welcomed'] == true;
+
+      if (isGoingToLogin) {
+        if (user != null) {
+          return isWelcomeDone ? AppRoutes.home : AppRoutes.welcome;
+        }
+      } else if (user == null) {
+        return AppRoutes.login;
       }
+
+      if (isGoingToWelcome && isWelcomeDone) {
+        return AppRoutes.home;
+      }
+
+      return null;
     },
     routes: [
       GoRoute(
-        path: '/login',
+        path: AppRoutes.login,
         builder: (context, state) => const LoginPage(),
       ),
       GoRoute(
-        path: '/welcome',
+        path: AppRoutes.welcome,
         builder: (context, state) => const WelcomePage(),
       ),
       ShellRoute(
@@ -95,7 +65,7 @@ GoRouter router(Ref ref) {
         },
         routes: [
           GoRoute(
-            path: '/home',
+            path: AppRoutes.home,
             pageBuilder: (context, state) =>
                 const NoTransitionPage(child: HomeScreen()),
             routes: [
@@ -103,7 +73,7 @@ GoRouter router(Ref ref) {
             ],
           ),
           GoRoute(
-            path: '/study',
+            path: AppRoutes.study,
             pageBuilder: (context, state) =>
                 const NoTransitionPage(child: StudyScreen()),
             routes: [
@@ -124,7 +94,7 @@ GoRouter router(Ref ref) {
                       ).animate(
                         CurvedAnimation(
                           parent: animation,
-                          curve: Curves.linearToEaseOut,
+                          curve: Curves.easeInOut,
                         ),
                       ),
                       child: child,
@@ -136,7 +106,7 @@ GoRouter router(Ref ref) {
             ],
           ),
           GoRoute(
-            path: '/quiz',
+            path: AppRoutes.quiz,
             pageBuilder: (context, state) =>
                 const NoTransitionPage(child: QuizScreen()),
             routes: [
@@ -144,7 +114,7 @@ GoRouter router(Ref ref) {
             ],
           ),
           GoRoute(
-            path: '/profile',
+            path: AppRoutes.profile,
             pageBuilder: (context, state) =>
                 const NoTransitionPage(child: ProfileScreen()),
             routes: [
@@ -163,7 +133,7 @@ GoRouter router(Ref ref) {
                       ).animate(
                         CurvedAnimation(
                           parent: animation,
-                          curve: Curves.linearToEaseOut,
+                          curve: Curves.easeInOut,
                         ),
                       ),
                       child: child,

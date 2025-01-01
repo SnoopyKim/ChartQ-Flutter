@@ -1,5 +1,8 @@
 import 'package:chart_q/constants/style.dart';
 import 'package:chart_q/core/auth/auth_provider.dart';
+import 'package:chart_q/core/router/router.dart';
+import 'package:chart_q/core/router/routes.dart';
+import 'package:chart_q/shared/providers/scaffold_messenger_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -220,8 +223,10 @@ class ProfileScreen extends ConsumerWidget {
                                   BorderSide(color: AppColor.gray, width: 0.5)),
                         ),
                         child: GestureDetector(
-                          onTap: () =>
-                              ref.read(authProvider.notifier).signOut(),
+                          onTap: () async {
+                            await ref.read(authProvider.notifier).signOut();
+                            ref.read(routerProvider).go(AppRoutes.login);
+                          },
                           child: Text(
                             '로그아웃',
                             style: AppText.four

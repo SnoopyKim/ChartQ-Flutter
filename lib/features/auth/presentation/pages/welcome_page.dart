@@ -1,12 +1,17 @@
 import 'package:chart_q/constants/style.dart';
 import 'package:chart_q/core/auth/auth_provider.dart';
+import 'package:chart_q/core/router/router.dart';
+import 'package:chart_q/core/router/routes.dart';
 import 'package:chart_q/core/utils/logger.dart';
 import 'package:chart_q/core/utils/phone.dart';
+import 'package:chart_q/shared/providers/scaffold_messenger_provider.dart';
+import 'package:chart_q/shared/widgets/country_picker.dart';
 import 'package:chart_q/shared/widgets/ui/button.dart';
 import 'package:chart_q/shared/widgets/ui/input.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class WelcomePage extends ConsumerStatefulWidget {
   const WelcomePage({super.key});
@@ -18,7 +23,6 @@ class WelcomePage extends ConsumerStatefulWidget {
 class _WelcomePageState extends ConsumerState<WelcomePage> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _nicknameController;
-  late TextEditingController _countryController;
   late TextEditingController _nameController;
   late TextEditingController _phoneController;
 
@@ -37,7 +41,6 @@ class _WelcomePageState extends ConsumerState<WelcomePage> {
       _nicknameController = TextEditingController(
         text: currentUser.userMetadata?['name'] ?? '',
       );
-      _countryController = TextEditingController();
       _nameController = TextEditingController(
         text: currentUser.userMetadata?['name'] ?? '',
       );
@@ -45,17 +48,11 @@ class _WelcomePageState extends ConsumerState<WelcomePage> {
         text: currentUser.userMetadata?['phone'] ?? '',
       );
     }
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _countryController.text =
-          '${_country?.flagEmoji} ${_country?.getTranslatedName(context)}';
-    });
   }
 
   @override
   void dispose() {
     _nicknameController.dispose();
-    _countryController.dispose();
     _nameController.dispose();
     _phoneController.dispose();
     super.dispose();
@@ -63,25 +60,52 @@ class _WelcomePageState extends ConsumerState<WelcomePage> {
 
   void _passToNext() async {
     // 기본 닉네임은 이름으로 설정
-    ref
+    final result = await ref
         .read(authProvider.notifier)
         .updateUser(nickname: _nameController.text, isWelcomed: true);
+
+    handleResponse(result);
   }
 
   void _handleSubmit() async {
-    if (_formKey.currentState!.validate()) {
-      // 입력된 정보 처리 로직 구현
-      final result = await ref.read(authProvider.notifier).updateUser(
-          name: _nameController.text,
-          phone: PhoneUtils.formatPhoneNumber(_phoneController.text),
-          nickname: _nicknameController.text,
-          isWelcomed: true);
-      if (result.user == null) {
-        logger.e('Failed to update user');
-      } else {
-        logger.d(
-            'Success to update user [Welcome Done: ${result.user?.userMetadata?['chartq_is_welcomed']}]');
-      }
+    if (!_formKey.currentState!.validate()) return;
+    // 입력된 정보 처리 로직 구현
+    final response = await ref.read(authProvider.notifier).updateUser(
+        name: _nameController.text,
+        phone: PhoneUtils.formatPhoneNumber(_phoneController.text),
+        nickname: _nicknameController.text,
+        country: _country?.countryCode,
+        isWelcomed: true);
+
+    handleResponse(response);
+  }
+
+  void handleResponse(UserResponse response) {
+    if (response.user == null) {
+      ref.read(scaffoldMessengerKeyProvider).currentState?.showSnackBar(
+            SnackBar(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              backgroundColor: AppColor.red,
+              behavior: SnackBarBehavior.floating,
+              duration: const Duration(seconds: 2),
+              content: Text('프로필을 업데이트하는데 문제가 발생했습니다'),
+            ),
+          );
+    } else {
+      ref.read(routerProvider).replace(AppRoutes.home);
+      ref.read(scaffoldMessengerKeyProvider).currentState?.showSnackBar(
+            SnackBar(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              backgroundColor: AppColor.main,
+              behavior: SnackBarBehavior.floating,
+              duration: const Duration(seconds: 2),
+              content: Text('프로필 업데이트 완료'),
+            ),
+          );
     }
   }
 
@@ -92,7 +116,8 @@ class _WelcomePageState extends ConsumerState<WelcomePage> {
         title: const Text('환영합니다', style: AppText.h3),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.fromLTRB(
+            16.0, 16.0, 16.0, MediaQuery.of(context).padding.bottom + 16.0),
         child: Form(
           key: _formKey,
           child: Column(
@@ -119,59 +144,12 @@ class _WelcomePageState extends ConsumerState<WelcomePage> {
               SizedBox(height: 16),
               Text('국가'),
               const SizedBox(height: 8),
-              AppTextInput(
-                controller: _countryController,
-                readOnly: true,
-                hintText: '국가를 선택해주세요',
-                validator: (_) {
-                  if (_country == null) {
-                    return "Country cannot be empty";
-                  }
-                  return null;
-                },
-                onTap: () {
-                  showCountryPicker(
-                    context: context,
-                    useSafeArea: true,
-                    useRootNavigator: true,
-                    countryFilter: ['KR', 'US', 'JP', 'CN'],
-                    countryListTheme: CountryListThemeData(
-                      bottomSheetHeight:
-                          MediaQuery.of(context).size.height * 0.8,
-                      borderRadius: BorderRadius.circular(10),
-                      textStyle: AppText.two,
-                      inputDecoration: InputDecoration(
-                        hintText: '국가를 선택해주세요',
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          borderSide: BorderSide(
-                            color: AppColor.lineGray,
-                            width: 1,
-                            strokeAlign: BorderSide.strokeAlignInside,
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          borderSide: BorderSide(
-                            color: AppColor.main,
-                            width: 1,
-                            strokeAlign: BorderSide.strokeAlignInside,
-                          ),
-                        ),
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 8,
-                        ),
-                      ),
-                    ),
-                    onSelect: (Country country) {
-                      setState(() {
-                        _country = country;
-                        _countryController.text =
-                            '${_country?.flagEmoji} ${_country?.getTranslatedName(context)}';
-                      });
-                    },
-                  );
+              CountryPicker(
+                initialCountry: _country,
+                onSelectCountry: (country) {
+                  setState(() {
+                    _country = country;
+                  });
                 },
               ),
               SizedBox(height: 16),
@@ -180,7 +158,6 @@ class _WelcomePageState extends ConsumerState<WelcomePage> {
               AppTextInput(
                 controller: _nameController,
                 hintText: '이름을 입력해주세요',
-                enabled: false,
               ),
               SizedBox(height: 16),
               Text('전화번호'),
@@ -201,7 +178,7 @@ class _WelcomePageState extends ConsumerState<WelcomePage> {
                       TextButton(
                         onPressed: _passToNext,
                         child: Text(
-                          '다음에 하기',
+                          '나중에 하기',
                           style: AppText.three.copyWith(color: AppColor.black),
                         ),
                       ),
