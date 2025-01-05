@@ -47,10 +47,10 @@ flutter:
 
   assets:
     - .env
-    - assets/
     - assets/images/
     - assets/icons/
     - assets/icons/sns/
+    - assets/icons/arrow/
     - assets/lottie/
 
   fonts:

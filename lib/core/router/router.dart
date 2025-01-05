@@ -116,7 +116,7 @@ GoRouter router(Ref ref) {
           GoRoute(
             path: AppRoutes.profile,
             pageBuilder: (context, state) =>
-                const NoTransitionPage(child: ProfileScreen()),
+                NoTransitionPage(child: ProfileScreen()),
             routes: [
               // 프로필 화면의 하위 라우트들...
               GoRoute(

@@ -1,5 +1,5 @@
 import 'package:chart_q/constants/style.dart';
-import 'package:chart_q/core/utils/asset.dart';
+import 'package:chart_q/constants/asset.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';

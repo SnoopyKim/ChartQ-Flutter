@@ -1,6 +1,7 @@
 import 'package:chart_q/constants/style.dart';
 import 'package:chart_q/core/auth/auth_provider.dart';
 import 'package:chart_q/core/router/router.dart';
+import 'package:chart_q/core/utils/dialogs.dart';
 import 'package:chart_q/core/utils/phone.dart';
 import 'package:chart_q/shared/providers/scaffold_messenger_provider.dart';
 import 'package:chart_q/shared/widgets/country_picker.dart';
@@ -19,9 +20,13 @@ class ProfileEditScreen extends ConsumerStatefulWidget {
 
 class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
   final _formKey = GlobalKey<FormState>();
+  final _nicknameKey = GlobalKey<FormFieldState>();
   late TextEditingController _nicknameController;
   late TextEditingController _nameController;
   late TextEditingController _phoneController;
+
+  final _nicknameFocusNode = FocusNode();
+  bool _isNicknameFocused = false;
 
   late String? _avatarUrl;
   late Country? _country;
@@ -46,6 +51,16 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
     _phoneController = TextEditingController(
       text: user?.userMetadata?['phone'] ?? '',
     );
+
+    // 포커스 상태 변화 감지 리스너 등록
+    _nicknameFocusNode.addListener(() {
+      setState(() {
+        _isNicknameFocused = _nicknameFocusNode.hasFocus;
+        if (!_isNicknameFocused) {
+          _nicknameKey.currentState?.validate();
+        }
+      });
+    });
   }
 
   @override
@@ -53,11 +68,16 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
     _nicknameController.dispose();
     _nameController.dispose();
     _phoneController.dispose();
+
+    _nicknameFocusNode.dispose();
+
     super.dispose();
   }
 
   void _updateProfile() async {
     if (!_formKey.currentState!.validate()) return;
+    bool result = await context.showConfirmDialog(message: '변경 사항을 저장할까요?');
+    if (!result) return;
 
     await ref.read(authProvider.notifier).updateUser(
           nickname: _nicknameController.text,
@@ -160,17 +180,23 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
                     Text('닉네임'),
                     const SizedBox(height: 8),
                     AppTextInput(
+                      key: _nicknameKey,
                       controller: _nicknameController,
-                      hintText: '3글자 이상으로 입력해주세요',
+                      focusNode: _nicknameFocusNode,
+                      hintText: '닉네임을 입력하세요',
+                      // errorText: '이미 사용중인 닉네임이에요',
+                      helperText: _isNicknameFocused
+                          ? '닉네임은 특수문자 없이 3-12글자여야 합니다'
+                          : null,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return "Nickname cannot be empty";
+                          return "닉네임을 입력하세요";
                         }
                         if (value.length < 3 || value.length > 12) {
-                          return "Nickname must be 3-12 characters long";
+                          return "닉네임은 3-12글자여야 합니다";
                         }
                         if (!nicknameRegex.hasMatch(value)) {
-                          return "Nickname cannot contain punctuation or symbols";
+                          return "닉네임에 특수문자를 포함할 수 없습니다";
                         }
                         return null;
                       },

@@ -2,6 +2,9 @@ import 'package:chart_q/constants/style.dart';
 import 'package:chart_q/core/auth/auth_provider.dart';
 import 'package:chart_q/core/router/router.dart';
 import 'package:chart_q/core/router/routes.dart';
+import 'package:chart_q/constants/asset.dart';
+import 'package:chart_q/core/utils/dialogs.dart';
+import 'package:chart_q/core/utils/logger.dart';
 import 'package:chart_q/shared/providers/scaffold_messenger_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,7 +12,40 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 class ProfileScreen extends ConsumerWidget {
-  const ProfileScreen({super.key});
+  ProfileScreen({super.key});
+
+  final menus = [
+    {
+      'title': '즐겨찾기',
+      'icon': AppAsset.bookmark,
+      'path': AppRoutes.profile,
+    },
+    {
+      'title': '알림설정',
+      'icon': AppAsset.alert,
+      'path': AppRoutes.profile,
+    },
+    {
+      'title': '뱃지',
+      'icon': AppAsset.badge,
+      'path': AppRoutes.profile,
+    },
+    {
+      'title': '언어변경',
+      'icon': AppAsset.translate,
+      'path': AppRoutes.profile,
+    },
+    {
+      'title': '1:1문의',
+      'icon': AppAsset.help,
+      'path': AppRoutes.profile,
+    },
+    {
+      'title': '이용약관',
+      'icon': AppAsset.terms,
+      'path': AppRoutes.profile,
+    },
+  ];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -22,7 +58,13 @@ class ProfileScreen extends ConsumerWidget {
           title: Text('Profile',
               style: AppText.h2.copyWith(color: AppColor.black)),
           centerTitle: false,
+          actions: [
+            IconButton(
+                onPressed: () {},
+                icon: SvgPicture.asset(AppAsset.alert, width: 24, height: 24))
+          ],
           backgroundColor: AppColor.white,
+          surfaceTintColor: AppColor.white,
         ),
         Expanded(
             child: SingleChildScrollView(
@@ -72,11 +114,12 @@ class ProfileScreen extends ConsumerWidget {
                                   color: AppColor.bgGray,
                                   shape: BoxShape.circle,
                                 ),
-                                child: Icon(
-                                  Icons.settings_outlined,
-                                  size: 20,
-                                  color: AppColor.gray,
-                                ),
+                                child: SvgPicture.asset(AppAsset.setting,
+                                    width: 24,
+                                    height: 24,
+                                    fit: BoxFit.none,
+                                    colorFilter: const ColorFilter.mode(
+                                        AppColor.gray, BlendMode.srcIn)),
                               ),
                             )
                           ],
@@ -127,7 +170,7 @@ class ProfileScreen extends ConsumerWidget {
                             child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            SvgPicture.asset('assets/icons/study.svg'),
+                            SvgPicture.asset(AppAsset.study),
                             Padding(
                               padding:
                                   const EdgeInsets.only(top: 8.0, bottom: 2),
@@ -154,7 +197,7 @@ class ProfileScreen extends ConsumerWidget {
                             child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            SvgPicture.asset('assets/icons/quiz.svg'),
+                            SvgPicture.asset(AppAsset.quiz),
                             Padding(
                               padding:
                                   const EdgeInsets.only(top: 8.0, bottom: 2),
@@ -180,15 +223,8 @@ class ProfileScreen extends ConsumerWidget {
                   Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      '즐겨찾기',
-                      '알림설정',
-                      '뱃지',
-                      '언어변경',
-                      '1:1문의',
-                      '이용약관',
-                    ]
-                        .map((t) => InkWell(
+                    children: menus
+                        .map((menu) => InkWell(
                               borderRadius: BorderRadius.circular(8),
                               hoverColor: AppColor.white,
                               splashColor: AppColor.bgGray,
@@ -196,13 +232,17 @@ class ProfileScreen extends ConsumerWidget {
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    Text(t, style: AppText.one),
+                                    SvgPicture.asset(menu['icon']!,
+                                        width: 24, height: 24),
+                                    const SizedBox(width: 16),
+                                    Expanded(
+                                        child: Text(menu['title']!,
+                                            style: AppText.one)),
                                     Icon(
                                       Icons.arrow_forward_ios,
-                                      size: 14,
+                                      size: 24,
                                       color: AppColor.black,
                                     )
                                   ],
@@ -212,6 +252,7 @@ class ProfileScreen extends ConsumerWidget {
                             ) as Widget)
                         .toList(),
                   ),
+                  const SizedBox(height: 16),
                   Row(
                     children: [
                       Container(
@@ -224,8 +265,14 @@ class ProfileScreen extends ConsumerWidget {
                         ),
                         child: GestureDetector(
                           onTap: () async {
-                            await ref.read(authProvider.notifier).signOut();
-                            ref.read(routerProvider).go(AppRoutes.login);
+                            bool result = await context.showConfirmDialog(
+                                message: '지금 그만하면 결과를 볼 수 없어요.\n종료할까요?',
+                                confirmText: '계속하기',
+                                cancelText: '그만하기');
+                            if (result) {
+                              await ref.read(authProvider.notifier).signOut();
+                              ref.read(routerProvider).go(AppRoutes.login);
+                            }
                           },
                           child: Text(
                             '로그아웃',

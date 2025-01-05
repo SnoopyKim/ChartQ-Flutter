@@ -1,7 +1,7 @@
 import 'package:chart_q/constants/style.dart';
 import 'package:chart_q/core/router/router.dart';
 import 'package:chart_q/core/router/routes.dart';
-import 'package:chart_q/core/utils/asset.dart';
+import 'package:chart_q/constants/asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:chart_q/core/auth/auth_provider.dart';

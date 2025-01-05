@@ -2,25 +2,28 @@ import 'package:chart_q/constants/style.dart';
 import 'package:flutter/material.dart';
 
 class AppTextInput extends TextFormField {
-  AppTextInput({
-    super.key,
-    super.initialValue,
-    super.controller,
-    String? hintText,
-    super.autovalidateMode = AutovalidateMode.disabled,
-    super.enabled,
-    super.validator,
-    super.onChanged,
-    super.onSaved,
-    super.onFieldSubmitted,
-    super.onTap,
-    super.keyboardType,
-    super.obscureText = false,
-    super.maxLines = 1,
-    super.maxLength,
-    super.autofocus = false,
-    super.readOnly,
-  }) : super(
+  AppTextInput(
+      {super.key,
+      super.initialValue,
+      super.controller,
+      super.focusNode,
+      String? hintText,
+      super.autovalidateMode = AutovalidateMode.disabled,
+      super.enabled,
+      super.validator,
+      super.onChanged,
+      super.onSaved,
+      super.onFieldSubmitted,
+      super.onTap,
+      super.keyboardType,
+      super.obscureText = false,
+      super.maxLines = 1,
+      super.maxLength,
+      super.autofocus = false,
+      super.readOnly,
+      String? errorText,
+      String? helperText})
+      : super(
           decoration: InputDecoration(
             fillColor: enabled == false ? AppColor.bgGray : null,
             filled: enabled == false,
@@ -36,6 +39,14 @@ class AppTextInput extends TextFormField {
               borderRadius: BorderRadius.circular(5),
               borderSide: BorderSide(
                 color: AppColor.main,
+                width: 1,
+                strokeAlign: BorderSide.strokeAlignInside,
+              ),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5),
+              borderSide: BorderSide(
+                color: AppColor.red,
                 width: 1,
                 strokeAlign: BorderSide.strokeAlignInside,
               ),
@@ -59,6 +70,14 @@ class AppTextInput extends TextFormField {
             hintText: hintText,
             hintStyle: AppText.two.copyWith(
               color: AppColor.gray,
+            ),
+            helperText: helperText,
+            helperStyle: AppText.four.copyWith(
+              color: AppColor.gray,
+            ),
+            errorText: errorText,
+            errorStyle: AppText.four.copyWith(
+              color: AppColor.red,
             ),
             contentPadding: EdgeInsets.symmetric(
               horizontal: 12,

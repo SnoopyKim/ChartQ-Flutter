@@ -1,4 +1,5 @@
 import 'package:chart_q/constants/style.dart';
+import 'package:chart_q/constants/asset.dart';
 import 'package:chart_q/core/utils/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -16,26 +17,26 @@ class ScaffoldWithNavBar extends StatelessWidget {
     {
       'path': '/home',
       'label': 'Home',
-      'icon': 'assets/icons/home.svg',
-      'filledIcon': 'assets/icons/home-filled.svg',
+      'icon': AppAsset.home,
+      'filledIcon': AppAsset.homeFilled,
     },
     {
       'path': '/study',
       'label': 'Study',
-      'icon': 'assets/icons/study.svg',
-      'filledIcon': 'assets/icons/study-filled.svg',
+      'icon': AppAsset.study,
+      'filledIcon': AppAsset.studyFilled,
     },
     {
       'path': '/quiz',
       'label': 'Quiz',
-      'icon': 'assets/icons/quiz.svg',
-      'filledIcon': 'assets/icons/quiz-filled.svg',
+      'icon': AppAsset.quiz,
+      'filledIcon': AppAsset.quizFilled,
     },
     {
       'path': '/profile',
       'label': 'Profile',
-      'icon': 'assets/icons/profile.svg',
-      'filledIcon': 'assets/icons/profile-filled.svg',
+      'icon': AppAsset.profile,
+      'filledIcon': AppAsset.profileFilled,
     },
   ];
 
