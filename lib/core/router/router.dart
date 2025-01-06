@@ -1,15 +1,16 @@
 import 'package:chart_q/core/utils/logger.dart';
 import 'package:chart_q/features/auth/presentation/pages/welcome_page.dart';
+import 'package:chart_q/features/main/presentation/screens/delete_account_screen.dart';
 import 'package:chart_q/features/main/presentation/screens/profile_edit_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:chart_q/core/auth/auth_provider.dart';
 import 'package:chart_q/features/auth/presentation/pages/login_page.dart';
-import 'package:chart_q/features/main/presentation/screens/home_screens.dart';
+import 'package:chart_q/features/main/presentation/screens/home_screen.dart';
 import 'package:chart_q/features/main/presentation/screens/study_screen.dart';
-import 'package:chart_q/features/main/presentation/screens/quiz_screens.dart';
-import 'package:chart_q/features/main/presentation/screens/profile_screens.dart';
+import 'package:chart_q/features/main/presentation/screens/quiz_screen.dart';
+import 'package:chart_q/features/main/presentation/screens/profile_screen.dart';
 import 'package:chart_q/features/main/presentation/screens/study_detail_screen.dart';
 import 'package:chart_q/shared/widgets/scaffold_with_nav_bar.dart';
 import 'package:flutter/material.dart';
@@ -78,29 +79,10 @@ GoRouter router(Ref ref) {
                 const NoTransitionPage(child: StudyScreen()),
             routes: [
               // 스터디 화면의 하위 라우트들...
-              GoRoute(
+              _ChildRoute(
                 path: ':id',
-                parentNavigatorKey: _rootNavigatorKey,
-                pageBuilder: (context, state) => CustomTransitionPage(
-                  child: StudyDetailScreen(
-                    studyId: state.pathParameters['id']!,
-                  ),
-                  transitionsBuilder:
-                      (context, animation, secondaryAnimation, child) {
-                    return SlideTransition(
-                      position: Tween<Offset>(
-                        begin: const Offset(1, 0),
-                        end: Offset.zero,
-                      ).animate(
-                        CurvedAnimation(
-                          parent: animation,
-                          curve: Curves.easeInOut,
-                        ),
-                      ),
-                      child: child,
-                    );
-                  },
-                  transitionDuration: const Duration(milliseconds: 200),
+                builder: (context, state) => StudyDetailScreen(
+                  studyId: state.pathParameters['id']!,
                 ),
               ),
             ],
@@ -119,28 +101,13 @@ GoRouter router(Ref ref) {
                 NoTransitionPage(child: ProfileScreen()),
             routes: [
               // 프로필 화면의 하위 라우트들...
-              GoRoute(
+              _ChildRoute(
                 path: 'edit',
-                parentNavigatorKey: _rootNavigatorKey,
-                pageBuilder: (context, state) => CustomTransitionPage(
-                  child: ProfileEditScreen(),
-                  transitionsBuilder:
-                      (context, animation, secondaryAnimation, child) {
-                    return SlideTransition(
-                      position: Tween<Offset>(
-                        begin: const Offset(1, 0),
-                        end: Offset.zero,
-                      ).animate(
-                        CurvedAnimation(
-                          parent: animation,
-                          curve: Curves.easeInOut,
-                        ),
-                      ),
-                      child: child,
-                    );
-                  },
-                  transitionDuration: const Duration(milliseconds: 200),
-                ),
+                builder: (context, state) => ProfileEditScreen(),
+              ),
+              _ChildRoute(
+                path: 'delete',
+                builder: (context, state) => DeleteAccountScreen(),
               ),
             ],
           ),
@@ -148,4 +115,32 @@ GoRouter router(Ref ref) {
       ),
     ],
   );
+}
+
+class _ChildRoute extends GoRoute {
+  _ChildRoute({
+    required super.path,
+    required Widget Function(BuildContext context, GoRouterState state) builder,
+  }) : super(
+          parentNavigatorKey: _rootNavigatorKey,
+          pageBuilder: (context, state) => CustomTransitionPage(
+            child: builder(context, state),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return SlideTransition(
+                position: Tween<Offset>(
+                  begin: const Offset(1, 0),
+                  end: Offset.zero,
+                ).animate(
+                  CurvedAnimation(
+                    parent: animation,
+                    curve: Curves.easeInOut,
+                  ),
+                ),
+                child: child,
+              );
+            },
+            transitionDuration: const Duration(milliseconds: 200),
+          ),
+        );
 }

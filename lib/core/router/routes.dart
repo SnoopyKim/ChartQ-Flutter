@@ -11,4 +11,5 @@ class AppRoutes {
 
   static const String profile = '/profile';
   static const String profileEdit = '/profile/edit';
+  static const String deleteAccount = '/profile/delete';
 }

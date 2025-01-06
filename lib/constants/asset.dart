@@ -31,7 +31,11 @@ class AppAsset {
   static const String badge = '${iconPath}badge-outline.svg';
   static const String bookmark = '${iconPath}bookmark-outline.svg';
   static const String bookmarkFilled = '${iconPath}bookmark-filled.svg';
+  static const String check = '${iconPath}check.svg';
+  static const String close = '${iconPath}close.svg';
+  static const String export = '${iconPath}export.svg';
   static const String help = '${iconPath}help-outline.svg';
+  static const String reset = '${iconPath}reset.svg';
   static const String search = '${iconPath}search-outline.svg';
   static const String setting = '${iconPath}setting-outline.svg';
   static const String terms = '${iconPath}terms-outline.svg';

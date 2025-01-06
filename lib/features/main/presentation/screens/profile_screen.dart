@@ -266,9 +266,9 @@ class ProfileScreen extends ConsumerWidget {
                         child: GestureDetector(
                           onTap: () async {
                             bool result = await context.showConfirmDialog(
-                                message: '지금 그만하면 결과를 볼 수 없어요.\n종료할까요?',
-                                confirmText: '계속하기',
-                                cancelText: '그만하기');
+                                message: '로그아웃 하시겠어요?',
+                                confirmText: '확인',
+                                cancelText: '취소');
                             if (result) {
                               await ref.read(authProvider.notifier).signOut();
                               ref.read(routerProvider).go(AppRoutes.login);

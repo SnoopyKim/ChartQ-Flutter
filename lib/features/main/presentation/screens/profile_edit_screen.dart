@@ -1,6 +1,7 @@
 import 'package:chart_q/constants/style.dart';
 import 'package:chart_q/core/auth/auth_provider.dart';
 import 'package:chart_q/core/router/router.dart';
+import 'package:chart_q/core/router/routes.dart';
 import 'package:chart_q/core/utils/dialogs.dart';
 import 'package:chart_q/core/utils/phone.dart';
 import 'package:chart_q/shared/providers/scaffold_messenger_provider.dart';
@@ -255,7 +256,8 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
                   ),
                   margin: const EdgeInsets.fromLTRB(16.0, 16.0, 0.0, 0.0),
                   child: GestureDetector(
-                    onTap: () {},
+                    onTap: () =>
+                        ref.read(routerProvider).push(AppRoutes.deleteAccount),
                     child: Text(
                       '회원탈퇴',
                       style: AppText.four
