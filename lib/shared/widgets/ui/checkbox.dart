@@ -23,16 +23,6 @@ class _AppCheckboxState extends State<AppCheckbox> {
   }
 
   @override
-  void didUpdateWidget(AppCheckbox oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.initialValue != isChecked) {
-      setState(() {
-        isChecked = widget.initialValue;
-      });
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {

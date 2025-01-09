@@ -26,8 +26,10 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // 전역으로 쓰이는 상태값들을 watch
     final router = ref.watch(routerProvider);
     final scaffoldMessengerKey = ref.watch(scaffoldMessengerKeyProvider);
+
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'ChartQ',

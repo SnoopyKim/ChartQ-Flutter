@@ -75,7 +75,7 @@ class ProfileScreen extends ConsumerWidget {
                 children: [
                   // Profile
                   GestureDetector(
-                    onTap: () => context.go('/profile/edit'),
+                    onTap: () => context.go(AppRoutes.profileEdit),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisSize: MainAxisSize.min,
@@ -218,7 +218,9 @@ class ProfileScreen extends ConsumerWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  Image.asset('assets/images/ad-banner-basic.png'),
+                  GestureDetector(
+                      onTap: () => context.go(AppRoutes.subscribe),
+                      child: Image.asset('assets/images/ad-banner-basic.png')),
                   const SizedBox(height: 16),
                   Column(
                     mainAxisSize: MainAxisSize.min,

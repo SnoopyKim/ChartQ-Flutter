@@ -2,6 +2,7 @@ import 'package:chart_q/core/utils/logger.dart';
 import 'package:chart_q/features/auth/presentation/pages/welcome_page.dart';
 import 'package:chart_q/features/main/presentation/screens/delete_account_screen.dart';
 import 'package:chart_q/features/main/presentation/screens/profile_edit_screen.dart';
+import 'package:chart_q/features/main/presentation/screens/subscribe_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -108,6 +109,10 @@ GoRouter router(Ref ref) {
               _ChildRoute(
                 path: 'delete',
                 builder: (context, state) => DeleteAccountScreen(),
+              ),
+              _ChildRoute(
+                path: 'subscribe',
+                builder: (context, state) => const SubscribeScreen(),
               ),
             ],
           ),
