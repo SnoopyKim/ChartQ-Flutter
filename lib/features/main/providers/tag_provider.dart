@@ -17,5 +17,6 @@ class TagListNotifier extends AsyncNotifier<List<Tag>> {
   }
 }
 
-final selectedTagProvider =
-    StateProvider<Tag>((ref) => Tag(id: -1, name: '전체'));
+final selectedStudyTagProvider = StateProvider<int>((ref) => -1);
+
+final selectedBookmarkTagProvider = StateProvider<int>((ref) => -1);

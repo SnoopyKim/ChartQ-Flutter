@@ -33,6 +33,19 @@ class StudyRepository {
     }).toList();
   }
 
+  Future<List<Study>> getStudiesByIds(List<String> ids) async {
+    final response = await supabase
+        .from('study')
+        .select('id, title, image, updated_at, study_tags(tag(*))')
+        .inFilter('id', ids);
+    return response.map((json) {
+      List<Tag> tags = json['study_tags']
+          .map<Tag>((tag) => Tag.fromJson(tag['tag'] as Map<String, dynamic>))
+          .toList();
+      return Study.fromJson(json).copyWith(tags: tags);
+    }).toList();
+  }
+
   Future<Study> getStudy(String id) async {
     final response = await supabase
         .from('study')

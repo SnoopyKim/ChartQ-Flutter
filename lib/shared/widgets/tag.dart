@@ -21,10 +21,10 @@ class TagChip extends StatelessWidget {
         height: 32,
         padding: const EdgeInsets.fromLTRB(12, 3, 12, 3),
         decoration: BoxDecoration(
-          color: isSelected ? AppColor.bgBlack : AppColor.white,
+          color: isSelected ? AppColor.main : AppColor.white,
           borderRadius: BorderRadius.circular(100),
-          border: Border.all(
-              color: isSelected ? AppColor.bgBlack : AppColor.lineGray),
+          border:
+              Border.all(color: isSelected ? AppColor.main : AppColor.lineGray),
         ),
         child: Text(tag,
             style: AppText.two

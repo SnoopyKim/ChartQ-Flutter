@@ -1,5 +1,6 @@
 import 'package:chart_q/core/utils/logger.dart';
 import 'package:chart_q/features/auth/presentation/pages/welcome_page.dart';
+import 'package:chart_q/features/main/presentation/screens/bookmark_screen.dart';
 import 'package:chart_q/features/main/presentation/screens/delete_account_screen.dart';
 import 'package:chart_q/features/main/presentation/screens/profile_edit_screen.dart';
 import 'package:chart_q/features/main/presentation/screens/subscribe_screen.dart';
@@ -117,6 +118,10 @@ GoRouter router(Ref ref) {
             ],
           ),
         ],
+      ),
+      GoRoute(
+        path: AppRoutes.bookmark,
+        builder: (context, state) => const BookmarkScreen(),
       ),
     ],
   );

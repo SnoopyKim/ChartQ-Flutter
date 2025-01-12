@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:chart_q/constants/asset.dart';
 import 'package:chart_q/constants/style.dart';
+import 'package:chart_q/core/router/router.dart';
+import 'package:chart_q/core/router/routes.dart';
 import 'package:chart_q/features/main/providers/tag_provider.dart';
 import 'package:chart_q/shared/widgets/cards/study_card.dart';
 import 'package:chart_q/shared/widgets/tag.dart';
@@ -19,7 +21,7 @@ class StudyScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final studyListState = ref.watch(studyListProvider);
     final tagListState = ref.watch(tagListProvider);
-    final selectedTag = ref.watch(selectedTagProvider);
+    final selectedTag = ref.watch(selectedStudyTagProvider);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -28,8 +30,19 @@ class StudyScreen extends ConsumerWidget {
           padding: EdgeInsets.fromLTRB(
               16, MediaQuery.of(context).padding.top + 16, 16, 16),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('Study', style: AppText.h2),
+              GestureDetector(
+                onTap: () {
+                  ref.read(routerProvider).push(AppRoutes.bookmark);
+                },
+                child: SvgPicture.asset(
+                  AppAsset.bookmark,
+                  width: 24,
+                  height: 24,
+                ),
+              ),
             ],
           ),
         ),
@@ -75,10 +88,10 @@ class StudyScreen extends ConsumerWidget {
                           padding: const EdgeInsets.only(left: 8.0),
                           child: TagChip(
                             tag: tag.name,
-                            isSelected: selectedTag.id == tag.id,
+                            isSelected: selectedTag == tag.id,
                             onTap: () => ref
-                                .read(selectedTagProvider.notifier)
-                                .state = tag,
+                                .read(selectedStudyTagProvider.notifier)
+                                .state = tag.id,
                           ),
                         ))
                     .toList(),

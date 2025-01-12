@@ -2,7 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chart_q/constants/asset.dart';
 import 'package:chart_q/constants/style.dart';
 import 'package:chart_q/core/router/router.dart';
-import 'package:chart_q/shared/widgets/app_error_widget.dart';
+import 'package:chart_q/core/utils/logger.dart';
+import 'package:chart_q/features/main/providers/bookmark_provider.dart';
 import 'package:chart_q/shared/widgets/tag.dart';
 import 'package:chart_q/shared/widgets/ui/app_bar.dart';
 import 'package:flutter/material.dart';
@@ -24,14 +25,27 @@ class StudyDetailScreen extends ConsumerWidget {
     final selectedStudy = ref.watch(selectedStudyProvider);
     final study = selectedStudy.value;
 
+    final isBookmarked = ref.watch(isBookmarkedProvider(studyId));
+
     return Scaffold(
       appBar: AppBars.back(
         title: study?.title ?? "",
         onBack: () => ref.read(routerProvider).pop(),
         actions: [
           GestureDetector(
-            onTap: () {},
-            child: SvgPicture.asset(AppAsset.bookmark, width: 24, height: 24),
+            onTap: () {
+              if (study == null) return;
+              if (isBookmarked) {
+                ref.read(bookmarkIdProvider.notifier).removeBookmark(study.id);
+              } else {
+                ref.read(bookmarkIdProvider.notifier).addBookmark(study.id);
+              }
+            },
+            child: SvgPicture.asset(
+              isBookmarked ? AppAsset.bookmarkFilled : AppAsset.bookmark,
+              width: 24,
+              height: 24,
+            ),
           ),
           const SizedBox(width: 8),
           GestureDetector(

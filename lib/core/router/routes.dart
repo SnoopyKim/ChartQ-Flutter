@@ -13,4 +13,6 @@ class AppRoutes {
   static const String profileEdit = '/profile/edit';
   static const String deleteAccount = '/profile/delete';
   static const String subscribe = '/profile/subscribe';
+
+  static const String bookmark = '/bookmark';
 }

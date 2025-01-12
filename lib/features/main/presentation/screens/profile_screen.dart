@@ -18,32 +18,32 @@ class ProfileScreen extends ConsumerWidget {
     {
       'title': '즐겨찾기',
       'icon': AppAsset.bookmark,
-      'path': AppRoutes.profile,
+      'path': AppRoutes.bookmark,
     },
     {
       'title': '알림설정',
       'icon': AppAsset.alert,
-      'path': AppRoutes.profile,
+      'path': null,
     },
     {
       'title': '뱃지',
       'icon': AppAsset.badge,
-      'path': AppRoutes.profile,
+      'path': null,
     },
     {
       'title': '언어변경',
       'icon': AppAsset.translate,
-      'path': AppRoutes.profile,
+      'path': null,
     },
     {
       'title': '1:1문의',
       'icon': AppAsset.help,
-      'path': AppRoutes.profile,
+      'path': null,
     },
     {
       'title': '이용약관',
       'icon': AppAsset.terms,
-      'path': AppRoutes.profile,
+      'path': null,
     },
   ];
 
@@ -242,15 +242,16 @@ class ProfileScreen extends ConsumerWidget {
                                     Expanded(
                                         child: Text(menu['title']!,
                                             style: AppText.one)),
-                                    Icon(
-                                      Icons.arrow_forward_ios,
-                                      size: 24,
-                                      color: AppColor.black,
-                                    )
+                                    SvgPicture.asset(AppAsset.arrowRight,
+                                        width: 24, height: 24)
                                   ],
                                 ),
                               ),
-                              onTap: () {},
+                              onTap: () {
+                                if (menu['path'] != null) {
+                                  context.push(menu['path']!);
+                                }
+                              },
                             ) as Widget)
                         .toList(),
                   ),

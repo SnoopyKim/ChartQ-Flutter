@@ -14,17 +14,17 @@ final studyListProvider =
 class StudyListNotifier extends AsyncNotifier<List<Study>> {
   @override
   Future<List<Study>> build() async {
-    final selectedTag = ref.watch(selectedTagProvider);
+    final selectedTag = ref.watch(selectedStudyTagProvider);
     return _fetchStudies(selectedTag);
   }
 
-  Future<List<Study>> _fetchStudies(Tag selectedTag) async {
+  Future<List<Study>> _fetchStudies(int selectedTagId) async {
     state = const AsyncValue.loading();
     try {
-      if (selectedTag.id == -1) {
+      if (selectedTagId == -1) {
         return await StudyRepository().getAllStudies();
       } else {
-        return await StudyRepository().getStudiesByTag(selectedTag.id);
+        return await StudyRepository().getStudiesByTag(selectedTagId);
       }
     } catch (error) {
       logger.e('Error fetching studies', error: error);
@@ -34,7 +34,7 @@ class StudyListNotifier extends AsyncNotifier<List<Study>> {
 
   Future<void> searchStudies(String keyword) async {
     state = const AsyncValue.loading();
-    final data = await _fetchStudies(ref.watch(selectedTagProvider));
+    final data = await _fetchStudies(ref.watch(selectedStudyTagProvider));
     if (keyword.isEmpty) {
       state = AsyncValue.data(data);
       return;

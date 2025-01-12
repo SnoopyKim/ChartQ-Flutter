@@ -7,11 +7,12 @@ class AppBars {
   static AppBar back({
     required String title,
     required VoidCallback onBack,
+    PreferredSizeWidget? bottom,
     List<Widget> actions = const [],
   }) {
     return AppBar(
       title: Text(title, style: AppText.one.copyWith(color: AppColor.black)),
-      titleSpacing: 2,
+      titleSpacing: 8,
       centerTitle: false,
       backgroundColor: AppColor.white,
       surfaceTintColor: AppColor.white,
@@ -26,6 +27,7 @@ class AppBars {
       actions: actions,
       leadingWidth: 40,
       elevation: 0,
+      bottom: bottom,
     );
   }
 }
