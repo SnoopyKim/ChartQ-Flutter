@@ -23,7 +23,7 @@ mixin _$Tag {
   int get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   @JsonKey(name: 'created_at')
-  DateTime get createdAt => throw _privateConstructorUsedError;
+  DateTime? get createdAt => throw _privateConstructorUsedError;
 
   /// Serializes this Tag to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -40,7 +40,7 @@ abstract class $TagCopyWith<$Res> {
       _$TagCopyWithImpl<$Res, Tag>;
   @useResult
   $Res call(
-      {int id, String name, @JsonKey(name: 'created_at') DateTime createdAt});
+      {int id, String name, @JsonKey(name: 'created_at') DateTime? createdAt});
 }
 
 /// @nodoc
@@ -59,7 +59,7 @@ class _$TagCopyWithImpl<$Res, $Val extends Tag> implements $TagCopyWith<$Res> {
   $Res call({
     Object? id = null,
     Object? name = null,
-    Object? createdAt = null,
+    Object? createdAt = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -70,10 +70,10 @@ class _$TagCopyWithImpl<$Res, $Val extends Tag> implements $TagCopyWith<$Res> {
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      createdAt: null == createdAt
+      createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
     ) as $Val);
   }
 }
@@ -85,7 +85,7 @@ abstract class _$$TagImplCopyWith<$Res> implements $TagCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {int id, String name, @JsonKey(name: 'created_at') DateTime createdAt});
+      {int id, String name, @JsonKey(name: 'created_at') DateTime? createdAt});
 }
 
 /// @nodoc
@@ -101,7 +101,7 @@ class __$$TagImplCopyWithImpl<$Res> extends _$TagCopyWithImpl<$Res, _$TagImpl>
   $Res call({
     Object? id = null,
     Object? name = null,
-    Object? createdAt = null,
+    Object? createdAt = freezed,
   }) {
     return _then(_$TagImpl(
       id: null == id
@@ -112,10 +112,10 @@ class __$$TagImplCopyWithImpl<$Res> extends _$TagCopyWithImpl<$Res, _$TagImpl>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      createdAt: null == createdAt
+      createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
     ));
   }
 }
@@ -126,7 +126,7 @@ class _$TagImpl implements _Tag {
   const _$TagImpl(
       {required this.id,
       required this.name,
-      @JsonKey(name: 'created_at') required this.createdAt});
+      @JsonKey(name: 'created_at') this.createdAt});
 
   factory _$TagImpl.fromJson(Map<String, dynamic> json) =>
       _$$TagImplFromJson(json);
@@ -137,7 +137,7 @@ class _$TagImpl implements _Tag {
   final String name;
   @override
   @JsonKey(name: 'created_at')
-  final DateTime createdAt;
+  final DateTime? createdAt;
 
   @override
   String toString() {
@@ -177,10 +177,9 @@ class _$TagImpl implements _Tag {
 
 abstract class _Tag implements Tag {
   const factory _Tag(
-          {required final int id,
-          required final String name,
-          @JsonKey(name: 'created_at') required final DateTime createdAt}) =
-      _$TagImpl;
+      {required final int id,
+      required final String name,
+      @JsonKey(name: 'created_at') final DateTime? createdAt}) = _$TagImpl;
 
   factory _Tag.fromJson(Map<String, dynamic> json) = _$TagImpl.fromJson;
 
@@ -190,7 +189,7 @@ abstract class _Tag implements Tag {
   String get name;
   @override
   @JsonKey(name: 'created_at')
-  DateTime get createdAt;
+  DateTime? get createdAt;
 
   /// Create a copy of Tag
   /// with the given fields replaced by the non-null parameter values.

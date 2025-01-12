@@ -18,18 +18,18 @@ class StudyRepository {
     }).toList();
   }
 
-  Future<List<Study>> getStudiesByTag(String tagId) async {
+  Future<List<Study>> getStudiesByTag(int tagId) async {
     final response = await supabase
         .from("study_tags")
         .select(
             "study(id, title, image, updated_at, study_tags(tag(*)))") // studies 테이블의 데이터를 가져옴
         .eq("tag_id", tagId);
-
     return response.map((json) {
-      List<Tag> tags = json['study_tags']
+      final studyData = json['study'];
+      List<Tag> tags = studyData['study_tags']
           .map<Tag>((tag) => Tag.fromJson(tag['tag'] as Map<String, dynamic>))
           .toList();
-      return Study.fromJson(json).copyWith(tags: tags);
+      return Study.fromJson(studyData).copyWith(tags: tags);
     }).toList();
   }
 

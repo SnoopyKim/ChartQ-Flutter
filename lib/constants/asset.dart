@@ -38,6 +38,7 @@ class AppAsset {
   static const String reset = '${iconPath}reset.svg';
   static const String search = '${iconPath}search-outline.svg';
   static const String setting = '${iconPath}setting-outline.svg';
+  static const String share = '${iconPath}share.svg';
   static const String terms = '${iconPath}terms-outline.svg';
   static const String translate = '${iconPath}translate-outline.svg';
 }

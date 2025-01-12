@@ -21,6 +21,8 @@ class AppTextInput extends TextFormField {
       super.maxLength,
       super.autofocus = false,
       super.readOnly,
+      super.onTapOutside,
+      Widget? prefixIcon,
       String? errorText,
       String? helperText})
       : super(
@@ -83,6 +85,9 @@ class AppTextInput extends TextFormField {
               horizontal: 12,
               vertical: 8,
             ),
+            isDense: true,
+            prefixIcon: prefixIcon,
+            prefixIconConstraints: BoxConstraints(),
           ),
           style: AppText.two.copyWith(
             color: enabled == false ? AppColor.gray : AppColor.black,

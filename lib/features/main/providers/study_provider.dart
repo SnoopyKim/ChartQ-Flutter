@@ -1,9 +1,9 @@
 import 'package:chart_q/core/utils/logger.dart';
+import 'package:chart_q/features/main/domain/models/tag.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:chart_q/features/main/data/repositories/study_repository.dart';
 import 'package:chart_q/features/main/domain/models/study.dart';
-
-final studyRepositoryProvider = Provider((ref) => StudyRepository());
+import 'package:chart_q/features/main/providers/tag_provider.dart';
 
 // 전체 Study 목록을 관리하는 provider
 final studyListProvider =
@@ -14,20 +14,36 @@ final studyListProvider =
 class StudyListNotifier extends AsyncNotifier<List<Study>> {
   @override
   Future<List<Study>> build() async {
-    return _fetchStudies();
+    final selectedTag = ref.watch(selectedTagProvider);
+    return _fetchStudies(selectedTag);
   }
 
-  Future<List<Study>> _fetchStudies() async {
-    final repository = ref.read(studyRepositoryProvider);
-    return repository.getAllStudies();
-  }
-
-  Future<void> filterByTag(String tagId) async {
+  Future<List<Study>> _fetchStudies(Tag selectedTag) async {
     state = const AsyncValue.loading();
     try {
-      final repository = ref.read(studyRepositoryProvider);
-      final studies = await repository.getStudiesByTag(tagId);
-      state = AsyncValue.data(studies);
+      if (selectedTag.id == -1) {
+        return await StudyRepository().getAllStudies();
+      } else {
+        return await StudyRepository().getStudiesByTag(selectedTag.id);
+      }
+    } catch (error) {
+      logger.e('Error fetching studies', error: error);
+      return [];
+    }
+  }
+
+  Future<void> searchStudies(String keyword) async {
+    state = const AsyncValue.loading();
+    final data = await _fetchStudies(ref.watch(selectedTagProvider));
+    if (keyword.isEmpty) {
+      state = AsyncValue.data(data);
+      return;
+    }
+    try {
+      final searchedStudies = data.where((study) {
+        return study.title.contains(keyword);
+      }).toList();
+      state = AsyncValue.data(searchedStudies);
     } catch (error, stackTrace) {
       state = AsyncValue.error(error, stackTrace);
     }
@@ -49,12 +65,13 @@ class SelectedStudyNotifier extends AsyncNotifier<Study?> {
   Future<void> selectStudy(Study study) async {
     state = AsyncValue.data(study);
     try {
-      state = const AsyncValue.loading();
-      final repository = ref.read(studyRepositoryProvider);
-      final content = await repository.getStudyContent(study.id);
+      // state = const AsyncValue.loading();
+      final content = await StudyRepository().getStudyContent(study.id);
       state = AsyncValue.data(study.copyWith(content: content));
     } catch (error, stackTrace) {
-      state = AsyncValue.error(error, stackTrace);
+      logger.e('Error fetching study content',
+          error: error, stackTrace: stackTrace);
+      state = AsyncValue.data(study.copyWith(content: ''));
     }
   }
 
@@ -62,6 +79,3 @@ class SelectedStudyNotifier extends AsyncNotifier<Study?> {
     state = const AsyncValue.data(null);
   }
 }
-
-// 선택된 태그를 관리하는 provider
-final selectedTagProvider = StateProvider<String?>((ref) => null);

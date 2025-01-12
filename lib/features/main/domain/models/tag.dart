@@ -8,7 +8,7 @@ class Tag with _$Tag {
   const factory Tag({
     required int id,
     required String name,
-    @JsonKey(name: 'created_at') required DateTime createdAt,
+    @JsonKey(name: 'created_at') DateTime? createdAt,
   }) = _Tag;
 
   factory Tag.fromJson(Map<String, dynamic> json) => _$TagFromJson(json);

@@ -1,9 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:chart_q/constants/asset.dart';
+import 'package:chart_q/constants/style.dart';
+import 'package:chart_q/core/router/router.dart';
 import 'package:chart_q/shared/widgets/app_error_widget.dart';
+import 'package:chart_q/shared/widgets/tag.dart';
 import 'package:chart_q/shared/widgets/ui/app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:chart_q/features/main/providers/study_provider.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
 class StudyDetailScreen extends ConsumerWidget {
@@ -21,26 +26,39 @@ class StudyDetailScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBars.back(
-          title: study?.title ?? "", onBack: () => Navigator.pop(context)),
+        title: study?.title ?? "",
+        onBack: () => ref.read(routerProvider).pop(),
+        actions: [
+          GestureDetector(
+            onTap: () {},
+            child: SvgPicture.asset(AppAsset.bookmark, width: 24, height: 24),
+          ),
+          const SizedBox(width: 8),
+          GestureDetector(
+            onTap: () {},
+            child: SvgPicture.asset(AppAsset.export, width: 24, height: 24),
+          ),
+          const SizedBox(width: 16),
+        ],
+      ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Hero(
               tag: 'image-${study?.id}',
-              child: study?.image != null
-                  ? CachedNetworkImage(
-                      imageUrl: study?.image ?? '',
-                      height: 260,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                    )
-                  : Image.asset(
-                      'assets/images/placeholder.png',
-                      height: 260,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                    ),
+              child: CachedNetworkImage(
+                imageUrl: study?.image ?? '',
+                errorWidget: (context, url, error) => Image.asset(
+                  'assets/images/placeholder.png',
+                  height: 260,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+                height: 260,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(16),
@@ -49,57 +67,35 @@ class StudyDetailScreen extends ConsumerWidget {
                 children: [
                   Text(
                     study?.title ?? '',
-                    style: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      height: 34 / 24,
-                    ),
+                    style: AppText.h2,
                   ),
                   Text(
                     '${study?.updatedAt.year}-${study?.updatedAt.month}-${study?.updatedAt.day}',
-                    style: TextStyle(
-                      color: Colors.grey[600],
-                      fontSize: 14,
-                    ),
+                    style: AppText.two.copyWith(color: AppColor.gray),
                   ),
+                  const SizedBox(height: 8),
                   Wrap(
+                    spacing: 8,
+                    runSpacing: 6,
                     children: (study?.tags ?? [])
-                        .map((tag) => Chip(
-                              label: Text(tag.name,
-                                  style:
-                                      TextStyle(fontSize: 16, height: 26 / 16)),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 6, vertical: 2),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(100),
-                                side:
-                                    BorderSide(color: const Color(0xFFDCDCDC)),
-                              ),
-                            ))
+                        .map((tag) => TagChip(tag: tag.name))
                         .toList(),
                   ),
                   const SizedBox(height: 16),
-                  selectedStudy.when(
-                    data: (study) => HtmlWidget(
-                      study?.content ?? '',
-                      customStylesBuilder: (element) {
-                        if (element.localName?.toLowerCase() == 'a') {
-                          return {'color': 'rgb(59 130 246)'};
-                        }
-                        return null;
-                      },
-                      onTapUrl: (url) {
-                        print(url);
-                        return true;
-                      },
-                      textStyle: const TextStyle(fontSize: 14),
-                    ),
-                    loading: () => const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [CircularProgressIndicator()],
-                    ),
-                    error: (error, stack) =>
-                        AppErrorWidget(message: error.toString()),
+                  HtmlWidget(
+                    study?.content ?? '',
+                    customStylesBuilder: (element) {
+                      if (element.localName?.toLowerCase() == 'a') {
+                        return {'color': 'rgb(59 130 246)'};
+                      }
+                      return null;
+                    },
+                    onTapUrl: (url) {
+                      // TODO: 외부 링크 열기 or 웹뷰
+                      print(url);
+                      return true;
+                    },
+                    textStyle: AppText.two.copyWith(height: 1.4),
                   ),
                 ],
               ),
